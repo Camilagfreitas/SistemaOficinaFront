@@ -9,7 +9,12 @@ import InventoryListModal from "../inventory/inventoryListModal";
 interface AddPartModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddPart: (part: { name: string; quantity: number }) => void;
+  onAddPart: (part: {
+    name: string;
+    quantity: number;
+    price: number;
+    code: string;
+  }) => void;
 }
 
 export default function AddPartModal({
@@ -20,6 +25,7 @@ export default function AddPartModal({
   const [isInventoryModalOpen, setIsInventoryModalOpen] = useState(false);
   const [selectedPart, setSelectedPart] = useState<IPart | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
+  const [value, setValue] = useState<number | undefined>(undefined);
 
   const handleSelectPart = (part: IPart) => {
     setSelectedPart(part);
@@ -27,10 +33,22 @@ export default function AddPartModal({
   };
 
   const handleConfirm = () => {
-    if (selectedPart && quantity > 0) {
-      onAddPart({ name: selectedPart.description, quantity });
-      onClose();
+    if (selectedPart && quantity) {
+      onAddPart({
+        name: selectedPart.description,
+        quantity,
+        price: value ?? selectedPart.price,
+        code: selectedPart.code,
+      });
+      handleClose();
     }
+  };
+
+  const handleClose = () => {
+    setSelectedPart(null);
+    setQuantity(1);
+    setValue(0);
+    onClose();
   };
 
   return (
@@ -50,10 +68,13 @@ export default function AddPartModal({
           {selectedPart && (
             <Input
               type="number"
-              min={1}
-              value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
-              placeholder="Quantidade"
+              value={selectedPart.code === "1" ? value : quantity}
+              onChange={(e) =>
+                selectedPart.code === "1"
+                  ? setValue(Number(e.target.value))
+                  : setQuantity(Number(e.target.value))
+              }
+              placeholder={selectedPart.code === "1" ? "Valor" : "Quantidade"}
             />
           )}
 

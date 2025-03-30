@@ -62,7 +62,7 @@ export function VehiclesCombobox<T extends FieldValues>({
       </PopoverTrigger>
       <PopoverContent className="w-[250px] p-0 bg-white">
         <Command>
-          <CommandInput placeholder="Buscar proprietário..." className="h-9" />
+          <CommandInput placeholder="Buscar veículo..." className="h-9" />
           <CommandList>
             {isLoading && <p className="p-2 text-sm">Carregando...</p>}
             {isError && (

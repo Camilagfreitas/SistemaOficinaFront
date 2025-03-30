@@ -23,6 +23,7 @@ import { Plus } from "lucide-react";
 import { useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+
 import { z } from "zod";
 import AddPartModal from "./addPartModal";
 
@@ -34,8 +35,10 @@ const serviceSchema = z.object({
       serviceType: z.string().min(1, "Tipo de serviço é obrigatório"),
       parts: z.array(
         z.object({
+          code: z.string().min(1, "Código da peça é obrigatório"),
           name: z.string().min(1, "Nome da peça é obrigatório"),
           quantity: z.number().min(1, "Quantidade deve ser pelo menos 1").int(),
+          price: z.number(),
         })
       ),
     })
@@ -68,7 +71,12 @@ export default function ServiceRegistrationScreen() {
     setIsModalOpen(true);
   };
 
-  const onPartSelected = (part: { name: string; quantity: number }) => {
+  const onPartSelected = (part: {
+    code: string;
+    name: string;
+    quantity: number;
+    price: number;
+  }) => {
     if (selectedServiceIndex !== null) {
       const currentParts =
         getValues(`services.${selectedServiceIndex}.parts`) || [];
@@ -89,6 +97,24 @@ export default function ServiceRegistrationScreen() {
       console.error("Erro ao registrar serviço:", error);
     }
   };
+
+  const totalLabor = serviceFields.reduce((total, service) => {
+    return (
+      total +
+      service.parts.reduce((sum, part) => {
+        return part.code === "1" ? sum + part.price * part.quantity : sum;
+      }, 0)
+    );
+  }, 0);
+
+  const totalParts = serviceFields.reduce((total, service) => {
+    return (
+      total +
+      service.parts.reduce((sum, part) => {
+        return part.code !== "1" ? sum + part.price * part.quantity : sum;
+      }, 0)
+    );
+  }, 0);
 
   return (
     <div className="max-h-screen flex flex-col bg-gray-100">
@@ -148,6 +174,7 @@ export default function ServiceRegistrationScreen() {
                         Descrição
                       </TableHead>
                       <TableHead>Quantidade</TableHead>
+                      <TableHead>Valor Unitário</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -156,6 +183,7 @@ export default function ServiceRegistrationScreen() {
                         <TableCell>{part.name}</TableCell>
                         <TableCell>{part.name}</TableCell>
                         <TableCell>{part.quantity}</TableCell>
+                        <TableCell>R$ {part.price}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -186,6 +214,16 @@ export default function ServiceRegistrationScreen() {
               <Plus className="w-4 h-4" />
               Adicionar Serviço
             </Button>
+          </div>
+
+          <div className="mt-6 p-4 bg-white rounded-xl shadow-md">
+            <h3 className="text-lg font-semibold">Resumo</h3>
+            <p className="mt-2 text-gray-700">
+              Total de Mão de Obra: R$ {totalLabor.toFixed(2)}
+            </p>
+            <p className="mt-2 text-gray-700">
+              Total de Peças: R$ {totalParts.toFixed(2)}
+            </p>
           </div>
 
           <div className="flex justify-center mt-6 gap-[50px]">
