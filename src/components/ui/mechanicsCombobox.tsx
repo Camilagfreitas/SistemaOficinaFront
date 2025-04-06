@@ -73,7 +73,7 @@ export function MechanicsCombobox<T extends FieldValues>({
               {mechanics?.map((mechanic) => (
                 <CommandItem
                   key={mechanic._id}
-                  value={mechanic.name && mechanic.lastname}
+                  value={`${mechanic.name} ${mechanic.lastname ?? ""}`}
                   onSelect={() => {
                     setValue(
                       "mechanic" as Path<T>,

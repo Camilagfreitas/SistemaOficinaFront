@@ -28,7 +28,7 @@ import { postRegisterVehicle } from "./vehiclesService";
 
 const vehicleRegistrationSchema = z.object({
   plate: z.string().min(1, "A placa é obrigatória"),
-  owner: z.string().min(1, "Obrigatório selecionar um proprietário"),
+  customer: z.string().min(1, "Obrigatório selecionar um proprietário"),
   mileage: z
     .string()
     .min(1, "Obrigatório cadastrar kilometragem")
@@ -90,7 +90,7 @@ export default function VehicleRegistrationScreen() {
             </div>
             <div>
               <Controller
-                name="owner"
+                name="customer"
                 control={control}
                 render={({ field }) => (
                   <CustomersCombobox
@@ -99,8 +99,10 @@ export default function VehicleRegistrationScreen() {
                   />
                 )}
               />
-              {errors.owner && (
-                <p className="text-red-500 text-sm">{errors.owner.message}</p>
+              {errors.customer && (
+                <p className="text-red-500 text-sm">
+                  {errors.customer.message}
+                </p>
               )}
             </div>
             <div>

@@ -14,6 +14,7 @@ interface AddPartModalProps {
     quantity: number;
     price: number;
     code: string;
+    id: string;
   }) => void;
 }
 
@@ -39,6 +40,7 @@ export default function AddPartModal({
         quantity,
         price: value ?? selectedPart.price,
         code: selectedPart.code,
+        id: selectedPart._id,
       });
       handleClose();
     }
@@ -47,7 +49,7 @@ export default function AddPartModal({
   const handleClose = () => {
     setSelectedPart(null);
     setQuantity(1);
-    setValue(0);
+    setValue(undefined);
     onClose();
   };
 

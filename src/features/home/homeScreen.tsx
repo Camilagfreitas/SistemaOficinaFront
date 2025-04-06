@@ -4,11 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 export default function HomeScreen() {
   const navigate = useNavigate();
+  const name = localStorage.getItem("user");
 
   return (
     <div className="min-h-screen bg-gray-100">
       <h2 className="pl-[66px] pt-12 text-neutral-500 text-2xl font-semibold">
-        Seja bem-vinda, <span className="font-bold text-red-700">Camila</span>
+        Seja bem-vinda, <span className="font-bold text-red-700">{name}</span>
       </h2>
 
       {/* Container dos cards centralizados */}
@@ -36,7 +37,7 @@ export default function HomeScreen() {
             className="w-54"
             icon={<Icons.document />}
             title="Ordens de Serviço"
-            onClick={() => navigate("/cadastroOrdemServico")}
+            onClick={() => navigate("/listaServicos")}
           />
           <Card
             className="w-54"

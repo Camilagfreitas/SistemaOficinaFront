@@ -22,7 +22,7 @@ export function AppSidebar() {
   };
 
   return (
-    <SidebarMenu>
+    <SidebarMenu className="print:hidden">
       <div className="w-70">
         <h2 className="pt-[90px] pb-[60px] text-neutral-800 text-[36px] text-center">
           Auto <span className="font-semibold text-red-700">Elite</span>
@@ -61,11 +61,11 @@ export function AppSidebar() {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarMenuSub>
-                <SidebarMenuSubItem onClick={() => navigate("/listarUsuario")}>
+                <SidebarMenuSubItem onClick={() => navigate("/listaUsuarios")}>
                   Ver todos
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem
-                  onClick={() => navigate("/cadastrarUsuario")}
+                  onClick={() => navigate("/cadastroUsuario")}
                 >
                   Cadastrar
                 </SidebarMenuSubItem>
@@ -130,7 +130,11 @@ export function AppSidebar() {
                 <SidebarMenuSubItem onClick={() => navigate("/listaVeiculos")}>
                   Ver todos
                 </SidebarMenuSubItem>
-                <SidebarMenuSubItem>Cadastrar</SidebarMenuSubItem>
+                <SidebarMenuSubItem
+                  onClick={() => navigate("/cadastroVeiculo")}
+                >
+                  Cadastrar
+                </SidebarMenuSubItem>
               </SidebarMenuSub>
             </CollapsibleContent>
           </Collapsible>
@@ -157,9 +161,11 @@ export function AppSidebar() {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarMenuSub>
-                <SidebarMenuSubItem>Ver todos</SidebarMenuSubItem>
+                <SidebarMenuSubItem onClick={() => navigate("/listaServicos")}>
+                  Ver todos
+                </SidebarMenuSubItem>
                 <SidebarMenuSubItem
-                  onClick={() => navigate("/cadastroOrdemServico")}
+                  onClick={() => navigate("/cadastroServico")}
                 >
                   Cadastrar
                 </SidebarMenuSubItem>
@@ -188,9 +194,8 @@ export function AppSidebar() {
             <CollapsibleContent>
               <SidebarMenuSub>
                 <SidebarMenuSubItem onClick={() => navigate("/listaEstoque")}>
-                  Ver estoque
+                  Gerenciar estoque
                 </SidebarMenuSubItem>
-                <SidebarMenuSubItem>Cadastrar peça</SidebarMenuSubItem>
               </SidebarMenuSub>
             </CollapsibleContent>
           </Collapsible>

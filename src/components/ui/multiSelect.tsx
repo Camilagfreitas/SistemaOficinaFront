@@ -1,12 +1,7 @@
 // src/components/multi-select.tsx
 
 import { cva, type VariantProps } from "class-variance-authority";
-import {
-  CheckIcon,
-  ChevronDown,
-  XCircle,
-  XIcon
-} from "lucide-react";
+import { CheckIcon, ChevronDown, XCircle, XIcon } from "lucide-react";
 import * as React from "react";
 
 import { Badge } from "@/components/ui/badge";
@@ -27,6 +22,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Separator } from "./Separator";
+import { ScrollArea } from "./scrollArea";
 
 /**
  * Variants for the multi-select component to handle different styles.
@@ -76,7 +72,9 @@ interface MultiSelectProps
    * Callback function triggered when the selected values change.
    * Receives an array of the new selected values.
    */
- onValueChange: (value: { label: string; value: string; id: number }[]) => void;
+  onValueChange: (
+    value: { label: string; value: string; id: number }[]
+  ) => void;
 
   /** The default selected values when the component mounts. */
   defaultValue?: string[];
@@ -131,7 +129,7 @@ export const MultiSelect = React.forwardRef<
       placeholder = "Select options",
       animation = 0,
       maxCount = 3,
-      modalPopover = false,
+      modalPopover = true,
       className,
       ...props
     },
@@ -142,27 +140,34 @@ export const MultiSelect = React.forwardRef<
       value: string;
       id: number;
     }
-    
+
     const [selectedValues, setSelectedValues] = React.useState<Option[]>([]);
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
 
-    const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleInputKeyDown = (
+      event: React.KeyboardEvent<HTMLInputElement>
+    ) => {
       if (event.key === "Enter") {
         setIsPopoverOpen(true);
       } else if (event.key === "Backspace" && !event.currentTarget.value) {
         // Remove the last selected value
-        const newSelectedValues = selectedValues.slice(0, selectedValues.length - 1);
+        const newSelectedValues = selectedValues.slice(
+          0,
+          selectedValues.length - 1
+        );
         setSelectedValues(newSelectedValues);
         onValueChange(newSelectedValues); // Chama com o novo array de objetos
       }
     };
-    
+
     const toggleOption = (option: Option) => {
       // Verifica se o item já está selecionado
-      const newSelectedValues = selectedValues.some((item) => item.value === option.value)
+      const newSelectedValues = selectedValues.some(
+        (item) => item.value === option.value
+      )
         ? selectedValues.filter((item) => item.value !== option.value)
         : [...selectedValues, option];
-    
+
       setSelectedValues(newSelectedValues);
       onValueChange(newSelectedValues); // Chama com o novo array de objetos
     };
@@ -181,7 +186,6 @@ export const MultiSelect = React.forwardRef<
       setSelectedValues(newSelectedValues);
       onValueChange(newSelectedValues);
     };
-
 
     return (
       <Popover
@@ -203,14 +207,12 @@ export const MultiSelect = React.forwardRef<
               <div className="flex justify-between items-center w-full">
                 <div className="flex flex-wrap items-center">
                   {selectedValues.slice(0, maxCount).map((value) => {
-                    const option = options.find((o) => o.value === value.value); 
+                    const option = options.find((o) => o.value === value.value);
                     const IconComponent = option?.icon;
                     return (
                       <Badge
                         key={value.value}
-                        className={cn(
-                          multiSelectVariants({ variant })
-                        )}
+                        className={cn(multiSelectVariants({ variant }))}
                         style={{ animationDuration: `${animation}s` }}
                       >
                         {IconComponent && (
@@ -272,7 +274,7 @@ export const MultiSelect = React.forwardRef<
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-auto p-0 bg-white"
+          className="w-auto p-0 bg-white overflow-auto"
           align="start"
           onEscapeKeyDown={() => setIsPopoverOpen(false)}
         >
@@ -284,31 +286,33 @@ export const MultiSelect = React.forwardRef<
             <CommandList>
               <CommandEmpty>Resultados não encontrados.</CommandEmpty>
               <CommandGroup>
-                {options.map((option) => {
-                  const isSelected = selectedValues.includes(option);
-                  return (
-                    <CommandItem
-                      key={option.value}
-                      onSelect={() => toggleOption(option)}
-                      className="cursor-pointer"
-                    >
-                      <div
-                        className={cn(
-                          "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
-                          isSelected
-                            ? "bg-primary text-primary-foreground"
-                            : "opacity-50 [&_svg]:invisible"
-                        )}
+                <ScrollArea>
+                  {options.map((option) => {
+                    const isSelected = selectedValues.includes(option);
+                    return (
+                      <CommandItem
+                        key={option.value}
+                        onSelect={() => toggleOption(option)}
+                        className="cursor-pointer"
                       >
-                        <CheckIcon className="h-4 w-4" />
-                      </div>
-                      {option.icon && (
-                        <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-                      )}
-                      <span>{option.label}</span>
-                    </CommandItem>
-                  );
-                })}
+                        <div
+                          className={cn(
+                            "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                            isSelected
+                              ? "bg-primary text-primary-foreground"
+                              : "opacity-50 [&_svg]:invisible"
+                          )}
+                        >
+                          <CheckIcon className="h-4 w-4" />
+                        </div>
+                        {option.icon && (
+                          <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                        )}
+                        <span>{option.label}</span>
+                      </CommandItem>
+                    );
+                  })}
+                </ScrollArea>
               </CommandGroup>
               <CommandSeparator />
               <CommandGroup>
@@ -338,7 +342,6 @@ export const MultiSelect = React.forwardRef<
             </CommandList>
           </Command>
         </PopoverContent>
-       
       </Popover>
     );
   }

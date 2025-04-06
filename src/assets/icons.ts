@@ -1,3 +1,4 @@
+import { Edit } from "lucide-react";
 import { BsFillInboxesFill } from "react-icons/bs";
 import { FaCar, FaHome, FaUsers } from "react-icons/fa";
 import { IoMdInformationCircleOutline } from "react-icons/io";
@@ -14,4 +15,5 @@ export const Icons = {
   computer: MdComputer,
   search: IoSearch,
   trash: IoTrashBin,
+  edit: Edit,
 };

@@ -73,11 +73,11 @@ export function CustomersCombobox<T extends FieldValues>({
               {customers?.map((customer) => (
                 <CommandItem
                   key={customer._id}
-                  value={customer.name && customer.lastname}
+                  value={`${customer.name} ${customer.lastname ?? ""}`}
                   onSelect={() => {
                     console.log(customer);
                     setValue(
-                      "owner" as Path<T>,
+                      "customer" as Path<T>,
                       customer._id as PathValue<T, Path<T>>
                     );
                     setOpen(false);

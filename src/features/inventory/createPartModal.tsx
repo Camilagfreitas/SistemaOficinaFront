@@ -107,7 +107,7 @@ export default function CreatePartModal() {
         <DialogTrigger className="text-sm whitespace-nowrap p-3">
           Cadastrar Peça
         </DialogTrigger>
-        <DialogContent className="bg-white">
+        <DialogContent className="bg-white max-h-[90vh] overflow-y-auto">
           <form onSubmit={handleSubmit(onSubmitPart)}>
             <DialogHeader>
               <DialogTitle className="pb-3 text-neutral-500 text-xl font-medium">

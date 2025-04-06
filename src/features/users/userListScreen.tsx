@@ -1,7 +1,7 @@
 import { Icons } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/Input";
-import { IGetAllCustomersResponse } from "@/types/ApiResponse/IGetAllCustomersResponse";
+import { IGetAllUsersResponse } from "@/types/ApiResponse/IGetAllUsersResponse";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,21 +13,21 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/Table";
-import { getAllCustomers } from "./customerService";
+import { getAllMechanics } from "./usersService";
 
-export default function CustomerListScreen() {
+export default function UserListScreen() {
   const navigate = useNavigate();
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["customers"],
-    async queryFn() {
-      return await getAllCustomers();
-    },
+  const { isLoading, error, data } = useQuery<IGetAllUsersResponse[]>({
+    queryKey: ["users"],
+    queryFn: getAllMechanics,
   });
 
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredData = data?.filter((user: IGetAllCustomersResponse) =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredData = data?.filter((user) =>
+    `${user.name} ${user.lastname}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
   );
 
   if (isLoading) return <div>Carregando...</div>;
@@ -36,14 +36,14 @@ export default function CustomerListScreen() {
   return (
     <div>
       <h2 className="pl-[66px] pt-12 text-neutral-500 text-2xl font-medium">
-        Clientes
+        Usuários
       </h2>
 
       <div className="px-[80px] py-[20px]">
         <div className="flex gap-[40px] mb-4">
           <Input
             startIcon={<Icons.search />}
-            placeholder="Procurar Cliente"
+            placeholder="Procurar Usuário"
             className="bg-white rounded-xl border-none"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -52,9 +52,9 @@ export default function CustomerListScreen() {
             type="submit"
             variant="default"
             className="w-auto shadow-md rounded-xl"
-            onClick={() => navigate("/cadastroCliente")}
+            onClick={() => navigate("/cadastroUsuario")}
           >
-            Cadastrar Cliente
+            Cadastrar Usuário
           </Button>
         </div>
 
@@ -62,18 +62,16 @@ export default function CustomerListScreen() {
           <TableHeader className="h-[60px] text-neutral-400">
             <TableRow>
               <TableHead className="px-10">Nome</TableHead>
-              <TableHead>Telefone</TableHead>
-              <TableHead>Email</TableHead>
+              <TableHead>Login</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredData?.map((user: IGetAllCustomersResponse) => (
+            {filteredData?.map((user) => (
               <TableRow key={user._id} className="h-[50px] text-neutral-500">
                 <TableCell className="px-10">
                   {user.name} {user.lastname}
                 </TableCell>
-                <TableCell>{user.phone}</TableCell>
-                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.login}</TableCell>
               </TableRow>
             ))}
           </TableBody>

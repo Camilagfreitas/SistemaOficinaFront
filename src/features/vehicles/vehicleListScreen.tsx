@@ -1,10 +1,10 @@
-import { Icons } from '@/assets/icons';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/Input';
-import { IGetAllVehiclesResponse } from '@/types/ApiResponse/IGetAllVehiclesResponse';
-import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Icons } from "@/assets/icons";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/Input";
+import { IGetAllVehiclesResponse } from "@/types/ApiResponse/IGetAllVehiclesResponse";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Table,
   TableBody,
@@ -13,12 +13,12 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/Table";
-import { getAllVehicles } from './vehiclesService';
+import { getAllVehicles } from "./vehiclesService";
 
 export default function VehicleListScreen() {
   const navigate = useNavigate();
   const { isLoading, error, data } = useQuery({
-    queryKey: ['vehicles'],
+    queryKey: ["vehicles"],
     async queryFn() {
       return await getAllVehicles();
     },
@@ -26,10 +26,13 @@ export default function VehicleListScreen() {
 
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const filteredData = data?.filter((vehicle: IGetAllVehiclesResponse) =>
-    vehicle.plate.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    vehicle.owner.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    vehicle.owner.lastname?.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredData = data?.filter(
+    (vehicle: IGetAllVehiclesResponse) =>
+      vehicle.plate.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      vehicle.customer.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      vehicle.customer.lastname
+        ?.toLowerCase()
+        .includes(searchTerm.toLowerCase())
   );
 
   if (isLoading) return <div>Carregando...</div>;
@@ -42,15 +45,20 @@ export default function VehicleListScreen() {
       </h2>
 
       <div className="px-[80px] py-[20px]">
-        <div className="flex gap-[40px] mb-4"> 
+        <div className="flex gap-[40px] mb-4">
           <Input
             startIcon={<Icons.search />}
             placeholder="Procurar Veículo"
             className="bg-white rounded-xl border-none max-w-80"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)} 
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <Button type="submit" variant="default" className="w-auto shadow-md rounded-xl" onClick={()=>navigate('/cadastroVeiculo')}>
+          <Button
+            type="submit"
+            variant="default"
+            className="w-auto shadow-md rounded-xl"
+            onClick={() => navigate("/cadastroVeiculo")}
+          >
             Cadastrar Veículo
           </Button>
         </div>
@@ -67,12 +75,19 @@ export default function VehicleListScreen() {
           </TableHeader>
           <TableBody>
             {filteredData?.map((vehicle: IGetAllVehiclesResponse) => (
-              <TableRow key={vehicle._id} className="h-[50px] text-neutral-500 gap-2">
-                <TableCell className="px-10 max-w-[70px]">{vehicle.plate}</TableCell>
+              <TableRow
+                key={vehicle._id}
+                className="h-[50px] text-neutral-500 gap-2"
+              >
+                <TableCell className="px-10 max-w-[70px]">
+                  {vehicle.plate}
+                </TableCell>
                 <TableCell>{vehicle.model}</TableCell>
                 <TableCell>{vehicle.color}</TableCell>
                 <TableCell>{vehicle.year}</TableCell>
-                <TableCell>{vehicle.owner.name} {vehicle.owner.lastname}</TableCell>
+                <TableCell>
+                  {vehicle.customer.name} {vehicle.customer.lastname}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

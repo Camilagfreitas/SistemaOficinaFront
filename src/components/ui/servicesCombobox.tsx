@@ -110,7 +110,7 @@ export function ServicesCombobox<T extends FieldValues>({
         </PopoverContent>
       </Popover>
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-        <CreateDefectModal />
+        <CreateDefectModal onSuccess={() => setModalOpen(false)} />
       </Dialog>
     </>
   );

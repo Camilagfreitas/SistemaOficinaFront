@@ -1,7 +1,7 @@
 export interface IGetAllVehiclesResponse {
   _id: string;
     plate: string;
-    owner: {
+    customer: {
       name: string;
       lastname:string;
     }; 

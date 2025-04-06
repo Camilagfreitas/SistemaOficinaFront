@@ -7,22 +7,26 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/Input";
-import { Textarea } from "@/components/ui/textArea";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { postRegisterDefectCategory } from "./serviceOrderService";
 
+interface CreateDefectModalProps {
+  onSuccess: () => void;
+}
+
 const defectRegistrationSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
-  description: z.string(),
 });
 
 export type DefectRegistrationFormData = z.infer<
   typeof defectRegistrationSchema
 >;
 
-export default function CreatePartModal() {
+export default function CreatePartModal({ onSuccess }: CreateDefectModalProps) {
+  const queryClient = useQueryClient();
   const {
     register,
     formState: { errors },
@@ -34,8 +38,10 @@ export default function CreatePartModal() {
   const onSubmit = async (data: DefectRegistrationFormData) => {
     try {
       await postRegisterDefectCategory(data);
+      queryClient.invalidateQueries({ queryKey: ["services"] });
+      onSuccess();
     } catch (error) {
-      console.error("Erro ao cadastrar carro:", error);
+      console.error("Erro ao cadastrar serviço:", error);
     }
   };
 
@@ -51,22 +57,10 @@ export default function CreatePartModal() {
               <Input
                 {...register("name")}
                 placeholder="Nome"
-                className="max-w-36 mb-3"
+                className="max-w-50 mb-3"
               />
               {errors.name && (
                 <p className="text-red-500 text-sm">{errors.name.message}</p>
-              )}
-            </div>
-            <div>
-              <Textarea
-                {...register("description")}
-                placeholder="Descrição"
-                className="mb-3"
-              />
-              {errors.description && (
-                <p className="text-red-500 text-sm">
-                  {errors.description.message}
-                </p>
               )}
             </div>
           </DialogDescription>

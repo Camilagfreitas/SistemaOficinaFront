@@ -5,13 +5,13 @@ import { AppSidebar } from "./SideBarApp";
 export default function AuthenticatedLayout() {
   return (
     <SidebarProvider>
-      <div className="flex shadow-lg">
+      <div className="flex bg-white">
         <AppSidebar />
       </div>
 
-        <main className="flex-1 p-6 bg-gray-100">
-          <Outlet />
-        </main>
+      <main className="flex-1 p-6 bg-gray-100">
+        <Outlet />
+      </main>
     </SidebarProvider>
   );
 }
