@@ -95,14 +95,16 @@ export default function ServiceOrderListScreen() {
                       variant="default"
                       onClick={() => navigate(`/detalhesServico/${order._id}`)}
                     >
-                      Finalizar
+                       Detalhes
                     </Button>
                   </TableCell>
                   <TableCell>
+                    {order.status !== 'Fechada'?
                     <Icons.edit
-                      size={16}
-                      onClick={() => navigate(`/editarServico/${order._id}`)}
-                    />
+                    size={16}
+                    onClick={() => navigate(`/editarServico/${order._id}`)}
+                  />:null
+                    }
                   </TableCell>
                 </TableRow>
               ))

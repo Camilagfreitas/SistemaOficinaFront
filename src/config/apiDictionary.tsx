@@ -10,6 +10,8 @@ export const API_ENDPOINTS = {
     getUser: (id: string) => `${API_BASE_URL}/users/${id}`,
     getAllCustomers: () => `${API_BASE_URL}/customers/getAll`,
     postRegisterCustomer: () => `${API_BASE_URL}/customers/register`,
+    getCustomerDetails: (id: string) =>
+      `${API_BASE_URL}/customers/details/${id}`,
   },
   mechanic: {
     getAllMechanics: () => `${API_BASE_URL}/users/getAll`,
@@ -30,6 +32,8 @@ export const API_ENDPOINTS = {
     addPart: () => `${API_BASE_URL}/inventory/67cc8d8ddcee324bf91140ca/addPart`,
     updatePartsBatch: () =>
       `${API_BASE_URL}/inventory/67cc8d8ddcee324bf91140ca/updatePartsBatch`,
+    updatePartQuantity: (id: string) =>
+      `${API_BASE_URL}/inventory/67cc8d8ddcee324bf91140ca/updatePartQuantity/${id}`,
   },
   service: {
     getDefectCategories: () => `${API_BASE_URL}/defectCategories/getAll`,

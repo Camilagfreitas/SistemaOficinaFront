@@ -7,7 +7,7 @@ export default function HomeScreen() {
   const name = localStorage.getItem("user");
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="bg-gray-100">
       <h2 className="pl-[66px] pt-12 text-neutral-500 text-2xl font-semibold">
         Seja bem-vinda, <span className="font-bold text-red-700">{name}</span>
       </h2>

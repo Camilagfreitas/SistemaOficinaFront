@@ -13,13 +13,11 @@ export interface IService {
   details: IServiceDetails[];
 }
 
-export type ServiceOrderStatus = "OPENED" | "IN_PROGRESS" | "BLOCKED" | "CLOSED";
-
 export interface IServiceOrder {
   _id: string;
   vehicle: IGetAllVehiclesResponse;
   user: IGetAllUsersResponse;
-  status: ServiceOrderStatus;
+  status: string;
   services: IService[];
   totalPrice: number;
   deletedAt?: Date;

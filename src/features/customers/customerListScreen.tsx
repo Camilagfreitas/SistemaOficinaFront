@@ -68,13 +68,15 @@ export default function CustomerListScreen() {
           </TableHeader>
           <TableBody>
             {filteredData?.map((user: IGetAllCustomersResponse) => (
-              <TableRow key={user._id} className="h-[50px] text-neutral-500">
-                <TableCell className="px-10">
-                  {user.name} {user.lastname}
-                </TableCell>
-                <TableCell>{user.phone}</TableCell>
-                <TableCell>{user.email}</TableCell>
-              </TableRow>
+             <TableRow
+             key={user._id}
+             className="h-[50px] text-neutral-500 cursor-pointer hover:bg-neutral-100"
+             onClick={() => navigate(`/detalhesCliente/${user._id}`)} 
+           >
+             <TableCell className="px-10">{user.name} {user.lastname}</TableCell>
+             <TableCell>{user.phone}</TableCell>
+             <TableCell>{user.email}</TableCell>
+           </TableRow>
             ))}
           </TableBody>
         </Table>

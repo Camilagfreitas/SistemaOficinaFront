@@ -10,7 +10,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import ServiceOrderPrint from "./serviceOrderPrint";
-import { getServiceOrderById } from "./serviceOrderService";
+import { closeServiceOrder, getServiceOrderById} from "./serviceOrderService";
 
 export default function ServiceDetailsScreen() {
   const { id } = useParams();
@@ -49,8 +49,14 @@ export default function ServiceDetailsScreen() {
     );
   }, 0);
 
-  const handlePrint = () => {
+  const handlePrint = async () => {
     window.print();
+  };
+
+  const handleFinish = async () => {
+    if(data.status !=='CLOSED'){
+    await closeServiceOrder(data, id??'');
+    }
   };
 
   return (
@@ -59,6 +65,18 @@ export default function ServiceDetailsScreen() {
         Ordem de Serviço
       </h2>
       <div className="w-full px-20 max-w-5xl mx-auto print:hidden">
+        {data.status !== 'CLOSED' && (
+          <div className="flex justify-end mb-4">
+            <Button
+              size="sm"
+              variant="default"
+              onClick={() => handleFinish}
+            >
+              Finalizar Ordem
+            </Button>
+          </div>
+        )}
+        
         <div className="grid grid-cols-2 gap-10 mb-8">
           <div className="bg-white p-4 rounded-xl shadow-sm">
             <p className="text-red-700 font-bold">Informações do Veículo:</p>
@@ -154,3 +172,4 @@ export default function ServiceDetailsScreen() {
     </div>
   );
 }
+

@@ -17,6 +17,7 @@ import UserListScreen from "./features/users/userListScreen";
 import UserRegistrationScreen from "./features/users/userRegistrationScreen";
 import VehicleListScreen from "./features/vehicles/vehicleListScreen";
 import VehicleRegistrationScreen from "./features/vehicles/vehicleRegistrationScreen";
+import CustomerDetailScreen from "./features/customers/customerDetailsScreen";
 
 export default function AppRoutes() {
   return (
@@ -29,6 +30,7 @@ export default function AppRoutes() {
           <Route path="/listaUsuarios" element={<UserListScreen />} />
 
           <Route path="/listaClientes" element={<CustomerListScreen />} />
+          <Route path="/detalhesCliente/:id" element={<CustomerDetailScreen />} />
           <Route
             path="/cadastroCliente"
             element={<CustomerRegistrationScreen />}

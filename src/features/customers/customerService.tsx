@@ -2,6 +2,7 @@ import { API_ENDPOINTS } from "@/config/apiDictionary";
 import { IGetAllCustomersResponse } from "@/types/ApiResponse/IGetAllCustomersResponse";
 import axios from "axios";
 import { CustomerRegistrationFormData } from "./customerRegistrationScreen";
+import { IGetCustomerDetailsResponse } from "@/types/ApiResponse/IGetCustomerDetailsResponse";
 
 const token = localStorage.getItem('authToken');
 
@@ -40,4 +41,15 @@ const config = {
       throw error;
     }
   }  
+
+  export const getCustomerDetails = async (customerId: string): Promise<IGetCustomerDetailsResponse> => {
+    try {
+      const response = await axios.get(API_ENDPOINTS.customer.getCustomerDetails(customerId), config);
+      return response.data;
+    } catch (error) {
+      console.error("Erro:", error);
+      throw error;
+    }
+  }
+
 

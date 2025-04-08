@@ -38,7 +38,7 @@ export default function CreatePartModal({ onSuccess }: CreateDefectModalProps) {
   const onSubmit = async (data: DefectRegistrationFormData) => {
     try {
       await postRegisterDefectCategory(data);
-      queryClient.invalidateQueries({ queryKey: ["services"] });
+      queryClient.invalidateQueries({ queryKey: ["defects"] });
       onSuccess();
     } catch (error) {
       console.error("Erro ao cadastrar serviço:", error);

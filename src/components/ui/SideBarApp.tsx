@@ -1,6 +1,6 @@
 import { Icons } from "@/assets/icons";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -15,26 +15,59 @@ import {
 } from "./SideBar";
 
 export function AppSidebar() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null); // Estado para controlar qual item está aberto
+  const location = useLocation();
   const navigate = useNavigate();
-  const handleToggle = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index); // Alterna entre abrir e fechar
+
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const isActive = (path: string) => (location.pathname === path && openIndex === null);
+
+  useEffect(() => {
+    // Abrir o Collapsible quando o usuário estiver em uma página de subitem
+    if (isActive("/listaUsuarios") || isActive("/cadastroUsuario")) {
+      setOpenIndex(1); 
+    } else if (isActive("/listaClientes") || isActive("/cadastroCliente")) {
+      setOpenIndex(2); 
+    } else if (isActive("/listaVeiculos") || isActive("/cadastroVeiculo")) {
+      setOpenIndex(3); 
+    } else if (isActive("/listaServicos") || isActive("/cadastroServico")) {
+      setOpenIndex(4); 
+    } else if (isActive("/listaEstoque")) {
+      setOpenIndex(5); 
+    } else {
+      setOpenIndex(null); 
+    }
+  }, [location.pathname]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("user");
+    navigate("/");
   };
 
+  const handleMenuClick = (path: string, index: number | null) => {
+    setOpenIndex(index);
+    navigate(path);
+  };
+
+  const isSubItemActive = (subPath: string) => location.pathname === subPath;
+
   return (
-    <SidebarMenu className="print:hidden">
-      <div className="w-70">
+    <SidebarMenu className="print:hidden flex flex-col h-full">
+      <div className="w-70 flex flex-col flex-grow">
         <h2 className="pt-[90px] pb-[60px] text-neutral-800 text-[36px] text-center">
           Auto <span className="font-semibold text-red-700">Elite</span>
         </h2>
+
+        {/* Início */}
         <SidebarMenuItem>
           <SidebarMenuButton
             className={`font-medium text-[18px] ${
-              openIndex === 0
+              isActive("/home")
                 ? "bg-neutral-200 text-red-700 h-[60px]"
                 : "bg-transparent text-neutral-500 h-[45px]"
             } w-[calc(100%-20px)] rounded-r-full pr-[20px]`}
-            onClick={() => navigate("/home")}
+            onClick={() => handleMenuClick("/home", null)}
           >
             <Icons.home className="mr-[18px] ml-[20px]" />
             Início
@@ -43,14 +76,11 @@ export function AppSidebar() {
 
         {/* Menu Pessoas */}
         <SidebarMenuItem>
-          <Collapsible
-            open={openIndex === 1}
-            onOpenChange={() => handleToggle(1)}
-          >
+          <Collapsible open={openIndex === 1} onOpenChange={() => setOpenIndex(openIndex === 1 ? null : 1)}>
             <CollapsibleTrigger asChild>
               <SidebarMenuButton
                 className={`font-medium text-[18px] ${
-                  openIndex === 1
+                  openIndex === 1 || isActive("/listaUsuarios") || isActive("/cadastroUsuario")
                     ? "bg-neutral-200 text-red-700 h-[60px]"
                     : "bg-transparent text-neutral-500 h-[45px]"
                 } w-[calc(100%-20px)] rounded-r-full pr-[20px]`}
@@ -61,11 +91,19 @@ export function AppSidebar() {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarMenuSub>
-                <SidebarMenuSubItem onClick={() => navigate("/listaUsuarios")}>
+                <SidebarMenuSubItem
+                  onClick={() => handleMenuClick("/listaUsuarios", 1)}
+                  className={`cursor-pointer ${
+                    isSubItemActive("/listaUsuarios") ? "font-bold" : ""
+                  }`}
+                >
                   Ver todos
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem
-                  onClick={() => navigate("/cadastroUsuario")}
+                  onClick={() => handleMenuClick("/cadastroUsuario", 1)}
+                  className={`cursor-pointer ${
+                    isSubItemActive("/cadastroUsuario") ? "font-bold" : ""
+                  }`}
                 >
                   Cadastrar
                 </SidebarMenuSubItem>
@@ -74,16 +112,13 @@ export function AppSidebar() {
           </Collapsible>
         </SidebarMenuItem>
 
-        {/* Menu Pessoas */}
+        {/* Menu Clientes */}
         <SidebarMenuItem>
-          <Collapsible
-            open={openIndex === 2}
-            onOpenChange={() => handleToggle(2)}
-          >
+          <Collapsible open={openIndex === 2} onOpenChange={() => setOpenIndex(openIndex === 2 ? null : 2)}>
             <CollapsibleTrigger asChild>
               <SidebarMenuButton
                 className={`font-medium text-[18px] ${
-                  openIndex === 2
+                  openIndex === 2 || isActive("/listaClientes") || isActive("/cadastroCliente")
                     ? "bg-neutral-200 text-red-700 h-[60px]"
                     : "bg-transparent text-neutral-500 h-[45px]"
                 } w-[calc(100%-20px)] rounded-r-full pr-[20px]`}
@@ -94,11 +129,19 @@ export function AppSidebar() {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarMenuSub>
-                <SidebarMenuSubItem onClick={() => navigate("/listaClientes")}>
+                <SidebarMenuSubItem
+                  onClick={() => handleMenuClick("/listaClientes", 2)}
+                  className={`cursor-pointer ${
+                    isSubItemActive("/listaClientes") ? "font-bold" : ""
+                  }`}
+                >
                   Ver todos
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem
-                  onClick={() => navigate("/cadastroCliente")}
+                  onClick={() => handleMenuClick("/cadastroCliente", 2)}
+                  className={`cursor-pointer ${
+                    isSubItemActive("/cadastroCliente") ? "font-bold" : ""
+                  }`}
                 >
                   Cadastrar
                 </SidebarMenuSubItem>
@@ -109,14 +152,11 @@ export function AppSidebar() {
 
         {/* Menu Carros */}
         <SidebarMenuItem>
-          <Collapsible
-            open={openIndex === 3}
-            onOpenChange={() => handleToggle(3)}
-          >
+          <Collapsible open={openIndex === 3} onOpenChange={() => setOpenIndex(openIndex === 3 ? null : 3)}>
             <CollapsibleTrigger asChild>
               <SidebarMenuButton
                 className={`font-medium text-[18px] ${
-                  openIndex === 3
+                  openIndex === 3 || isActive("/listaVeiculos") || isActive("/cadastroVeiculo")
                     ? "bg-neutral-200 text-red-700 h-[60px]"
                     : "bg-transparent text-neutral-500 h-[45px]"
                 } w-[calc(100%-20px)] rounded-r-full pr-[20px]`}
@@ -127,11 +167,19 @@ export function AppSidebar() {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarMenuSub>
-                <SidebarMenuSubItem onClick={() => navigate("/listaVeiculos")}>
+                <SidebarMenuSubItem
+                  onClick={() => handleMenuClick("/listaVeiculos", 3)}
+                  className={`cursor-pointer ${
+                    isSubItemActive("/listaVeiculos") ? "font-bold" : ""
+                  }`}
+                >
                   Ver todos
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem
-                  onClick={() => navigate("/cadastroVeiculo")}
+                  onClick={() => handleMenuClick("/cadastroVeiculo", 3)}
+                  className={`cursor-pointer ${
+                    isSubItemActive("/cadastroVeiculo") ? "font-bold" : ""
+                  }`}
                 >
                   Cadastrar
                 </SidebarMenuSubItem>
@@ -140,32 +188,36 @@ export function AppSidebar() {
           </Collapsible>
         </SidebarMenuItem>
 
+        {/* Menu Ordens de Serviço */}
         <SidebarMenuItem>
-          <Collapsible
-            open={openIndex === 4}
-            onOpenChange={() => handleToggle(4)}
-          >
+          <Collapsible open={openIndex === 4} onOpenChange={() => setOpenIndex(openIndex === 4 ? null : 4)}>
             <CollapsibleTrigger asChild>
               <SidebarMenuButton
                 className={`font-medium text-[18px] ${
-                  openIndex === 4
+                  openIndex === 4 || isActive("/listaServicos") || isActive("/cadastroServico")
                     ? "bg-neutral-200 text-red-700 h-[60px]"
                     : "bg-transparent text-neutral-500 h-[45px]"
                 } w-[calc(100%-20px)] rounded-r-full pr-[20px]`}
               >
-                <Icons.document className="mr-[18px] ml-[20px] " />
-                <span className="overflow-hidden text-ellipsis whitespace-nowrap">
-                  Ordens de Serviço
-                </span>
+                <Icons.document className="mr-[18px] ml-[20px]" />
+                Ordens de Serviço
               </SidebarMenuButton>
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarMenuSub>
-                <SidebarMenuSubItem onClick={() => navigate("/listaServicos")}>
+                <SidebarMenuSubItem
+                  onClick={() => handleMenuClick("/listaServicos", 4)}
+                  className={`cursor-pointer ${
+                    isSubItemActive("/listaServicos") ? "font-bold" : ""
+                  }`}
+                >
                   Ver todos
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem
-                  onClick={() => navigate("/cadastroServico")}
+                  onClick={() => handleMenuClick("/cadastroServico", 4)}
+                  className={`cursor-pointer ${
+                    isSubItemActive("/cadastroServico") ? "font-bold" : ""
+                  }`}
                 >
                   Cadastrar
                 </SidebarMenuSubItem>
@@ -174,15 +226,13 @@ export function AppSidebar() {
           </Collapsible>
         </SidebarMenuItem>
 
+        {/* Menu Estoque */}
         <SidebarMenuItem>
-          <Collapsible
-            open={openIndex === 5}
-            onOpenChange={() => handleToggle(5)}
-          >
+          <Collapsible open={openIndex === 5} onOpenChange={() => setOpenIndex(openIndex === 5 ? null : 5)}>
             <CollapsibleTrigger asChild>
               <SidebarMenuButton
                 className={`font-medium text-[18px] ${
-                  openIndex === 5
+                  openIndex === 5 || isActive("/listaEstoque")
                     ? "bg-neutral-200 text-red-700 h-[60px]"
                     : "bg-transparent text-neutral-500 h-[45px]"
                 } w-[calc(100%-20px)] rounded-r-full pr-[20px]`}
@@ -193,7 +243,12 @@ export function AppSidebar() {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarMenuSub>
-                <SidebarMenuSubItem onClick={() => navigate("/listaEstoque")}>
+                <SidebarMenuSubItem
+                  onClick={() => handleMenuClick("/listaEstoque", 5)}
+                  className={`cursor-pointer ${
+                    isSubItemActive("/listaEstoque") ? "font-bold" : ""
+                  }`}
+                >
                   Gerenciar estoque
                 </SidebarMenuSubItem>
               </SidebarMenuSub>
@@ -201,16 +256,27 @@ export function AppSidebar() {
           </Collapsible>
         </SidebarMenuItem>
 
+        {/* Menu Análises */}
         <SidebarMenuItem>
           <SidebarMenuButton
             className={`font-medium text-[18px] ${
-              openIndex === 6
+              isActive("/analises")
                 ? "bg-neutral-200 text-red-700 h-[60px]"
                 : "bg-transparent text-neutral-500 h-[45px]"
             } w-[calc(100%-20px)] rounded-r-full pr-[20px]`}
           >
             <Icons.info className="mr-[18px] ml-[20px]" />
             Análises
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+
+        <SidebarMenuItem className="mt-auto">
+          <SidebarMenuButton
+            className="font-medium text-[16px] bg-transparent text-red-500 h-[45px] w-[calc(100%-20px)] rounded-r-full pr-[20px] mt-auto"
+            onClick={handleLogout}
+          >
+            <Icons.logout className="mr-[18px] ml-[20px] text-red500" />
+            Sair
           </SidebarMenuButton>
         </SidebarMenuItem>
       </div>

@@ -132,17 +132,26 @@ export default function ServiceOrderFormScreen() {
   const onSubmit = async (data: ServiceFormData) => {
     try {
       if (isEditing && id) {
-        await updateServiceOrder({ ...data, status: "OPENED" }, id);
-        await updatePartsBatch(data);
+        const updateResult = await updateServiceOrder({ ...data, status: "OPENED" }, id);
+        
+        if (updateResult) {
+          await updatePartsBatch(data);
+        }
       } else {
-        await registerServiceOrder({ ...data, status: "OPENED" });
-        await updatePartsBatch(data);
+        const registerResult = await registerServiceOrder({ ...data, status: "OPENED" });
+        
+        if (registerResult) {
+          await updatePartsBatch(data);
+        }
       }
       setIsConfirmDialogOpen(true);
+  
     } catch (error) {
       console.error("Erro ao salvar:", error);
+
     }
   };
+  
 
   const totalLabor = serviceFields.reduce((total, service) => {
     return (

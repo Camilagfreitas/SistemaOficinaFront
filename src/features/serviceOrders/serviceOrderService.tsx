@@ -161,7 +161,7 @@ export const updateServiceOrder = async (
       })),
     };
 
-    const response = await axios.post(
+    const response = await axios.put(
       API_ENDPOINTS.service.updateServiceOrder(id),
       body,
       config
@@ -170,5 +170,38 @@ export const updateServiceOrder = async (
     return response;
   } catch (error) {
     console.error("Erro ao registrar serviço ou atualizar inventário:", error);
+  }
+};
+
+
+export const closeServiceOrder = async (
+  data: IServiceOrderDetails,
+  id: string,
+) => {
+  try {
+    const body = {
+      vehicle: data.vehicle,
+      user: data.user,
+      status: 'CLOSED',
+      totalPrice: data.totalPrice,
+      services: data.services.map((service) => ({
+        category: service.category,
+        details: service.details.map((part) => ({
+          part: part.part._id,
+          quantity: part.quantity,
+          price: part.price,
+        })),
+      })),
+    };
+
+    const response = await axios.put(
+      API_ENDPOINTS.service.updateServiceOrder(id),
+      body,
+      config
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Erro ao fechar ordem", error);
   }
 };

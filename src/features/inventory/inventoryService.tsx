@@ -59,22 +59,20 @@ export const addPart = async (
     throw error;
   }
 };
-//   export const postRegisterVehicle = async (
-//       data: VehicleRegistrationFormData
-//     ): Promise<IGetAllVehiclesResponse> => {
-//       try {
-//         const response = await axios.post(
-//           API_ENDPOINTS.vehicle.postRegisterVehicle(),
-//           data,
-//           config
-//         );
-//         return response.data;
-//       } catch (error) {
-//         if (axios.isAxiosError(error)) {
-//           console.error('Erro ao registrar carro:', error.response?.data || error.message);
-//         } else {
-//           console.error('Erro inesperado:', error);
-//         }
-//         throw error;
-//       }
-//     }
+
+export const updatePartQuantity = async (
+  id: string,
+  quantity: number
+): Promise<string> => {
+  try {
+    const response = await axios.put(
+      API_ENDPOINTS.inventory.updatePartQuantity(id),
+      { quantity },
+      config
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro:", error);
+    throw error;
+  }
+}

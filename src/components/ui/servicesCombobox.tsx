@@ -42,7 +42,7 @@ export function ServicesCombobox<T extends FieldValues>({
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["services"],
+    queryKey: ["defects"],
     queryFn: getDefectCategories,
   });
 

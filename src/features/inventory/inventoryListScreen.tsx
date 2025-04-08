@@ -1,7 +1,7 @@
 import { Icons } from "@/assets/icons";
 import { Input } from "@/components/ui/Input";
 import { IGetInventoryItem } from "@/types/ApiResponse/IGetInventoryResponse";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import {
   Table,
@@ -12,15 +12,32 @@ import {
   TableRow,
 } from "../../components/ui/Table";
 import CreatePartModal from "./createPartModal";
-import { deletePart, getInventory } from "./inventoryService";
+import { deletePart, getInventory, updatePartQuantity } from "./inventoryService";
 
 export default function InventoryListScreen() {
+  const queryClient = useQueryClient();
   const { isLoading, error, data } = useQuery({
     queryKey: ["inventory"],
     async queryFn() {
       return await getInventory();
     },
   });
+
+  const updateQuantityMutation = useMutation({
+    mutationFn: (variables: { partId: string, newQuantity: number }) =>
+      updatePartQuantity( variables.partId, variables.newQuantity),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["inventory"] });
+    },
+    onError: (error: Error) => {
+      console.error("Erro ao atualizar quantidade", error.message);
+    }
+  });
+
+  const handleQuantityChange = async ( partId: string, newQuantity: number) => {
+    if (newQuantity < 0) return; 
+    await updateQuantityMutation.mutateAsync({ partId, newQuantity: newQuantity });
+  };
 
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -77,7 +94,15 @@ export default function InventoryListScreen() {
                   {item.part.code}
                 </TableCell>
                 <TableCell>{item.part.description}</TableCell>
-                <TableCell>{item.quantity}</TableCell>
+                <TableCell>
+                  <Input
+                    type="number"
+                    value={item.quantity}
+                    onChange={(e) => handleQuantityChange(item.part._id, parseInt(e.target.value))}
+                    className="w-[80px] text-center"
+                  />
+                </TableCell>
+                
                 <TableCell>R$ {item.part.price}</TableCell>
                 <TableCell onClick={() => handleDelete(item.part._id)}>
                   <Icons.trash />

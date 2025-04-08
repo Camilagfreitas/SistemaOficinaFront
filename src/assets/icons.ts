@@ -1,8 +1,8 @@
-import { Edit } from "lucide-react";
+import { Edit, MinusIcon } from "lucide-react";
 import { BsFillInboxesFill } from "react-icons/bs";
 import { FaCar, FaHome, FaUsers } from "react-icons/fa";
 import { IoMdInformationCircleOutline } from "react-icons/io";
-import { IoDocumentTextOutline, IoSearch, IoTrashBin } from "react-icons/io5";
+import { IoAdd, IoDocumentTextOutline, IoLogOut, IoSearch, IoTrashBin } from "react-icons/io5";
 import { MdComputer } from "react-icons/md";
 
 export const Icons = {
@@ -16,4 +16,7 @@ export const Icons = {
   search: IoSearch,
   trash: IoTrashBin,
   edit: Edit,
+  logout: IoLogOut,
+  add: IoAdd,
+  minus: MinusIcon
 };
