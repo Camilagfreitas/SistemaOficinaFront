@@ -1,6 +1,4 @@
-import { ServiceOrderStatus } from "@/types/ApiResponse/IGetAllServiceOrdersResponse";
-
-export const translateStatus = (status: ServiceOrderStatus): string => {
+export const translateStatus = (status: string): string => {
   switch (status) {
     case "OPENED":
       return "Aberta";

@@ -21,7 +21,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { Separator } from "./Separator";
+import { Separator } from "./separator";
 import { ScrollArea } from "./scrollArea";
 
 /**
