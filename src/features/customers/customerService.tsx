@@ -4,7 +4,7 @@ import axios from "axios";
 import { CustomerRegistrationFormData } from "./customerRegistrationScreen";
 import { IGetCustomerDetailsResponse } from "@/types/ApiResponse/IGetCustomerDetailsResponse";
 
-const token = localStorage.getItem('authToken');
+const token = sessionStorage.getItem('authToken');
 
 const config = {
   headers: {
