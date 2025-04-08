@@ -26,8 +26,8 @@ export default function LoginScreen() {
   const onSubmit = async (data: FormData) => {
     const loginSuccess = await login(data);
     if (loginSuccess) {
-      localStorage.setItem("authToken", loginSuccess.token);
-      localStorage.setItem("user", loginSuccess.name);
+      sessionStorage.setItem("authToken", loginSuccess.token);
+      sessionStorage.setItem("user", loginSuccess.name);
       navigate("/home");
     }
   };

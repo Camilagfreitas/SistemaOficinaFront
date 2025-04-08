@@ -3,7 +3,7 @@ import { IGetInventoryResponse } from "@/types/ApiResponse/IGetInventoryResponse
 import axios from "axios";
 import { PartRegistrationFormData } from "./createPartModal";
 
-const token = localStorage.getItem("authToken");
+const token = sessionStorage.getItem("authToken");
 
 const config = {
   headers: {

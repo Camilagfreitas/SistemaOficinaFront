@@ -40,8 +40,8 @@ export function AppSidebar() {
   }, [location.pathname]);
 
   const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("authToken");
+    sessionStorage.removeItem("user");
     navigate("/");
   };
 

@@ -4,7 +4,7 @@ import { IGetAllVehiclesResponse } from "@/types/ApiResponse/IGetAllVehiclesResp
 import axios from "axios";
 import { VehicleRegistrationFormData } from "./vehicleRegistrationScreen";
 
-const token = localStorage.getItem('authToken');
+const token = sessionStorage.getItem('authToken');
 
 const config = {
   headers: {

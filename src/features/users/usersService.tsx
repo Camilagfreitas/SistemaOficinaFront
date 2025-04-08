@@ -9,7 +9,7 @@ interface LoginData {
   password: string;
 }
 
-const token = localStorage.getItem("authToken");
+const token = sessionStorage.getItem("authToken");
 
 const config = {
   headers: {

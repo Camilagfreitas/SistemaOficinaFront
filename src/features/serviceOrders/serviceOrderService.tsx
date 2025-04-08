@@ -7,7 +7,7 @@ import { DefectRegistrationFormData } from "./createDefectModal";
 import { ServiceFormData } from "./serviceOrderRegistrationScreen";
 import { translateStatus } from "./serviceOrderUtils";
 
-const token = localStorage.getItem("authToken");
+const token = sessionStorage.getItem("authToken");
 
 const config = {
   headers: {

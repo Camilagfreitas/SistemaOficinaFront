@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function HomeScreen() {
   const navigate = useNavigate();
-  const name = localStorage.getItem("user");
+  const name = sessionStorage.getItem("user");
 
   return (
     <div className="bg-gray-100">
