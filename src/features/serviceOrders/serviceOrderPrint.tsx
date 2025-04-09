@@ -58,7 +58,7 @@ export default function ServiceOrderPrint({ data, total }: Props) {
                 <p className="w-1/3">
                   {isLabor
                     ? detail.part?.description
-                    : `Peça: ${detail.part?.code} ${
+                    : `${detail.part?.code} ${
                         detail.part?.description || "—"
                       }`}
                 </p>
