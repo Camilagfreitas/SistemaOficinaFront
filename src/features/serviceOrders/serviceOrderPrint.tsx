@@ -13,10 +13,12 @@ export default function ServiceOrderPrint({ data, total }: Props) {
       <p className="text-end">
         <strong>Data:</strong> {creationDate.toLocaleDateString("pt-br")}
       </p>
-      <h2 className="text-neutral-800 text-[32px]">
+      <h2 className="text-neutral-800 text-[36px]">
         Auto <span className="font-semibold">Elite</span>
       </h2>
-      <h2 className="text-xl font-bold mb-4 text-center mt-4">
+      <p className="text-neutral-800 text-[8px]">
+      <span className="font-semibold"> Telefone:</span> (35)3222-7964 <span className="font-semibold">CNPJ:</span> 33.655.373/0001-5O</p>
+      <h2 className="text-xl font-bold mb-2 text-center mt-6">
         Ordem de Serviço
       </h2>
 
@@ -26,11 +28,11 @@ export default function ServiceOrderPrint({ data, total }: Props) {
           {data.vehicle.customer.lastname}
         </p>
         <p>
-          <strong>Mecânico:</strong> {data.user.name}
+          <strong>Mecânico:</strong> {data.user.name} 
         </p>
       </div>
 
-      <p className="mt-4 font-semibold">Informações do Veículo:</p>
+      <p className="mt-1 font-semibold">Informações do Veículo:</p>
       <p>
         <strong>Placa:</strong> {data.vehicle.plate}
       </p>
@@ -40,9 +42,6 @@ export default function ServiceOrderPrint({ data, total }: Props) {
       <p>
         <strong>Kilometragem:</strong> {data.vehicle.mileage} KM
       </p>
-
-      <p className="font-semibold mt-6">Detalhes do Serviço:</p>
-
       {data.services.map((service, i) => {
         const parts = service.details.filter(detail => detail.part?.code !== "1");
         const labor = service.details.filter(detail => detail.part?.code === "1");
@@ -53,20 +52,28 @@ export default function ServiceOrderPrint({ data, total }: Props) {
 
             {parts.length > 0 && (
               <>
-                <p className="font-semibold mt-2">Peças:</p>
+                 <div className="flex justify-between border-b border-gray-600 py-1 font-semibold">
+      <p className="w-1/4">Quantia</p>
+      <p className="w-1/4">Código</p>
+      <p className="w-1/4">Descrição</p>
+      <p className="w-1/4 text-end">Valor</p>
+    </div>
                 {parts.map((detail, j) => (
                   <div
                     key={`part-${j}`}
-                    className="pl-1 flex justify-between border-b border-gray-300 py-1"
+                    className="flex justify-between border-b border-gray-300 py-1"
                   >
-                    <p className="w-1/3 text-center">
+                    <p className="w-1/4 ">
                       {detail.quantity}
                     </p>
-                    <p className="w-1/3">
-                      {detail.part?.code} {detail.part?.description || "—"}
+                    <p className="w-1/4">
+                      {detail.part?.code} 
                     </p>
-                    <p className="w-1/3 text-end">
-                      Valor: R$ {detail.price.toFixed(2)}
+                    <p className="w-1/4">
+                      {detail.part?.description || "—"}
+                    </p>
+                    <p className="w-1/4 text-end">
+                    R$ {detail.price.toFixed(2)}
                     </p>
                   </div>
                 ))}
@@ -80,10 +87,9 @@ export default function ServiceOrderPrint({ data, total }: Props) {
                     key={`labor-${j}`}
                     className="pl-1 flex justify-between border-b border-gray-300 py-1"
                   >
-                    <p className="w-1/3" />
-                    <p className="w-1/3">{detail.part?.description}</p>
-                    <p className="w-1/3 text-end">
-                      Valor: R$ {detail.price.toFixed(2)}
+                    <p className="w-1/2">{detail.part?.description}</p>
+                    <p className="w-1/2 text-end">
+                    R$ {detail.price.toFixed(2)}
                     </p>
                   </div>
                 ))}

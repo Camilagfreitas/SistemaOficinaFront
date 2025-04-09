@@ -129,7 +129,7 @@ export default function ServiceDetailsScreen() {
                       <TableCell>{service.part.code}</TableCell>
                       <TableCell>{service.part.description}</TableCell>
                       <TableCell>{service.quantity}</TableCell>
-                      <TableCell>{service.price}</TableCell>
+                      <TableCell>R$ {service.price.toFixed(2)}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
