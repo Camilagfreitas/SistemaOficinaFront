@@ -42,7 +42,7 @@ const userRegistrationSchema = z
     ddd: z.string().min(2, "DDD é obrigatório"),
     phone: z.string().min(8, "O telefone é obrigatório"),
     email: z.string().min(1, "O e-mail é obrigatório").email("E-mail inválido"),
-    role: z.string(),
+    role: z.string().optional(),
     login: z.string().min(1, "O login é obrigatório"),
     password: z.string().min(6, "A senha deve ter no mínimo 6 caracteres"),
   })
