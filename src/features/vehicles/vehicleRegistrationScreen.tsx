@@ -35,7 +35,7 @@ const vehicleRegistrationSchema = z.object({
     .transform((value) => Number(value)),
   brand: z.string().min(1, "Obrigatório adicionar marca"),
   model: z.string().min(2, "Obrigatório adicionar modelo"),
-  chassis: z.string(),
+  chassis: z.string().optional(),
   year: z.string().min(4, "O ano é obrigatório"),
   color: z.string().min(1, "Adicionar cor"),
   fuel: z.string().min(1, "Selecione o tipo de combustível"),
