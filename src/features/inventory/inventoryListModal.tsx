@@ -79,7 +79,9 @@ export default function InventoryListModal({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredData?.map((item: IGetInventoryItem) => (
+              {filteredData?.map((item: IGetInventoryItem) => {
+                if(item.quantity > 0)
+                  return(
                 <TableRow
                   key={item.part._id}
                   className="h-[50px] text-neutral-500 gap-2"
@@ -101,7 +103,8 @@ export default function InventoryListModal({
                     </Button>
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
+              )}
             </TableBody>
           </Table>
         </div>

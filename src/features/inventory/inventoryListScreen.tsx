@@ -85,31 +85,39 @@ export default function InventoryListScreen() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredData?.map((item: IGetInventoryItem) => (
-              <TableRow
-                key={item.part._id}
-                className="h-[50px] text-neutral-500 gap-2"
-              >
-                <TableCell className="px-10 max-w-[70px]">
-                  {item.part.code}
-                </TableCell>
-                <TableCell>{item.part.description}</TableCell>
-                <TableCell>
-                  <Input
-                    type="number"
-                    value={item.quantity}
-                    onChange={(e) => handleQuantityChange(item.part._id, parseInt(e.target.value))}
-                    className="w-[80px] text-center"
-                  />
-                </TableCell>
-                
-                <TableCell>R$ {item.part.price}</TableCell>
-                <TableCell onClick={() => handleDelete(item.part._id)}>
-                  <Icons.trash />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+  {filteredData
+    ?.sort((a, b) => {
+      if (a.quantity === 0 && b.quantity > 0) return 1;
+      if (a.quantity > 0 && b.quantity === 0) return -1;
+      return 0; 
+    })
+    .map((item: IGetInventoryItem) => (
+      item.part.code != "1"&& 
+      <TableRow
+        key={item.part._id}
+        className="h-[50px] text-neutral-500 gap-2"
+      >
+        <TableCell className="px-10 max-w-[70px]">
+          {item.part.code}
+        </TableCell>
+        <TableCell>{item.part.description}</TableCell>
+        <TableCell>
+          <Input
+            type="number"
+            value={item.quantity}
+            onChange={(e) =>
+              handleQuantityChange(item.part._id, parseInt(e.target.value))
+            }
+            className="w-[80px] text-center"
+          />
+        </TableCell>
+        <TableCell>R$ {item.part.price}</TableCell>
+        <TableCell onClick={() => handleDelete(item.part._id)}>
+          <Icons.trash />
+        </TableCell>
+      </TableRow>
+    ))}
+</TableBody>
         </Table>
       </div>
     </div>
