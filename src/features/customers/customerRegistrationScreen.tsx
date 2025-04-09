@@ -29,7 +29,7 @@ const customerRegistrationSchema = z.object({
     }),
   ddd: z.string().min(2, "DDD é obrigatório"),
   phone: z.string().min(8, "O telefone é obrigatório"),
-  email: z.string().min(1, "O e-mail é obrigatório").email("E-mail inválido"),
+  email: z.string().email("E-mail inválido").optional(),
 }).transform((data) => ({
   ...data,
   phone: `${data.ddd}${data.phone}`,
