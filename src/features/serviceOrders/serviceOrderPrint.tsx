@@ -60,7 +60,7 @@ export default function ServiceOrderPrint({ data, total }: Props) {
                     className="pl-4 flex justify-between border-b border-gray-300 py-1"
                   >
                     <p className="w-1/3 text-center">
-                      Quantidade: {detail.quantity}
+                      {detail.quantity}
                     </p>
                     <p className="w-1/3">
                       {detail.part?.code} {detail.part?.description || "—"}
