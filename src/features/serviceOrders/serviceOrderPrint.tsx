@@ -57,7 +57,7 @@ export default function ServiceOrderPrint({ data, total }: Props) {
                 {parts.map((detail, j) => (
                   <div
                     key={`part-${j}`}
-                    className="pl-4 flex justify-between border-b border-gray-300 py-1"
+                    className="pl-1 flex justify-between border-b border-gray-300 py-1"
                   >
                     <p className="w-1/3 text-center">
                       {detail.quantity}
@@ -75,11 +75,10 @@ export default function ServiceOrderPrint({ data, total }: Props) {
 
             {labor.length > 0 && (
               <>
-                <p className="font-semibold mt-2">Mão de Obra:</p>
                 {labor.map((detail, j) => (
                   <div
                     key={`labor-${j}`}
-                    className="pl-4 flex justify-between border-b border-gray-300 py-1"
+                    className="pl-1 flex justify-between border-b border-gray-300 py-1"
                   >
                     <p className="w-1/3" />
                     <p className="w-1/3">{detail.part?.description}</p>
