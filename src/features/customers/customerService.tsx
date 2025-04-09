@@ -3,18 +3,11 @@ import { IGetAllCustomersResponse } from "@/types/ApiResponse/IGetAllCustomersRe
 import axios from "axios";
 import { CustomerRegistrationFormData } from "./customerRegistrationScreen";
 import { IGetCustomerDetailsResponse } from "@/types/ApiResponse/IGetCustomerDetailsResponse";
-
-const token = sessionStorage.getItem('authToken');
-
-const config = {
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-};
+import { getAuthConfig } from "@/config/authConfig";
 
   export const getAllCustomers= async (): Promise<IGetAllCustomersResponse[]> => {
     try {
-      const response = await axios.get(API_ENDPOINTS.customer.getAllCustomers(), config);
+      const response = await axios.get(API_ENDPOINTS.customer.getAllCustomers(), getAuthConfig());
       return response.data;
     } catch (error) {
       console.error("Erro:", error);
@@ -29,7 +22,7 @@ const config = {
       const response = await axios.post(
         API_ENDPOINTS.customer.postRegisterCustomer(),
         data,
-        config
+        getAuthConfig()
       );
       return response.data;
     } catch (error) {
@@ -44,7 +37,7 @@ const config = {
 
   export const getCustomerDetails = async (customerId: string): Promise<IGetCustomerDetailsResponse> => {
     try {
-      const response = await axios.get(API_ENDPOINTS.customer.getCustomerDetails(customerId), config);
+      const response = await axios.get(API_ENDPOINTS.customer.getCustomerDetails(customerId),  getAuthConfig());
       return response.data;
     } catch (error) {
       console.error("Erro:", error);

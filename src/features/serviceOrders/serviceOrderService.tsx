@@ -6,14 +6,8 @@ import axios from "axios";
 import { DefectRegistrationFormData } from "./createDefectModal";
 import { ServiceFormData } from "./serviceOrderRegistrationScreen";
 import { translateStatus } from "./serviceOrderUtils";
+import { getAuthConfig } from "@/config/authConfig";
 
-const token = sessionStorage.getItem("authToken");
-
-const config = {
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-};
 
 export const getDefectCategories = async (): Promise<
   IGetDefectCategories[]
@@ -21,7 +15,7 @@ export const getDefectCategories = async (): Promise<
   try {
     const response = await axios.get(
       API_ENDPOINTS.service.getDefectCategories(),
-      config
+       getAuthConfig()
     );
     return response.data;
   } catch (error) {
@@ -37,7 +31,7 @@ export const postRegisterDefectCategory = async (
     const response = await axios.post(
       API_ENDPOINTS.service.postRegisterDefectCategory(),
       data,
-      config
+      getAuthConfig()
     );
     return response.data;
   } catch (error) {
@@ -67,7 +61,7 @@ export const updatePartsBatch = async (data: ServiceFormData) => {
     const response = await axios.put(
       API_ENDPOINTS.inventory.updatePartsBatch(),
       body,
-      config
+      getAuthConfig()
     );
     return response;
   } catch (error) {
@@ -97,7 +91,7 @@ export const registerServiceOrder = async (
     const response = await axios.post(
       API_ENDPOINTS.service.createServiceOrder(),
       body,
-      config
+      getAuthConfig()
     );
 
     return response;
@@ -110,7 +104,7 @@ export const getServiceOrderList = async (): Promise<IServiceOrder[]> => {
   try {
     const response = await axios.get(
       API_ENDPOINTS.service.getServiceOrderList(),
-      config
+      getAuthConfig()
     );
 
     const translatedData = response.data.map((order: IServiceOrder) => ({
@@ -131,7 +125,7 @@ export const getServiceOrderById = async (
   try {
     const response = await axios.get(
       API_ENDPOINTS.service.getServiceOrderById(id),
-      config
+      getAuthConfig()
     );
 
     return response.data;
@@ -164,7 +158,7 @@ export const updateServiceOrder = async (
     const response = await axios.put(
       API_ENDPOINTS.service.updateServiceOrder(id),
       body,
-      config
+      getAuthConfig()
     );
 
     return response;
@@ -197,7 +191,7 @@ export const closeServiceOrder = async (
     const response = await axios.put(
       API_ENDPOINTS.service.updateServiceOrder(id),
       body,
-      config
+      getAuthConfig()
     );
 
     return response;

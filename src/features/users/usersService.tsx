@@ -3,19 +3,12 @@ import { IGetAllUsersResponse } from "@/types/ApiResponse/IGetAllUsersResponse";
 import { ILoginResponse } from "@/types/ApiResponse/ILoginResponse";
 import axios from "axios";
 import { UserRegistrationFormData } from "./userRegistrationScreen";
+import { getAuthConfig } from "@/config/authConfig";
 
 interface LoginData {
   email: string;
   password: string;
 }
-
-const token = sessionStorage.getItem("authToken");
-
-const config = {
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-};
 
 export const login = async (body: LoginData): Promise<ILoginResponse> => {
   try {
@@ -30,7 +23,7 @@ export const getAllMechanics = async (): Promise<IGetAllUsersResponse[]> => {
   try {
     const response = await axios.get(
       API_ENDPOINTS.mechanic.getAllMechanics(),
-      config
+       getAuthConfig()
     );
     return response.data.filter(
       (user: IGetAllUsersResponse) => user.role === "mechanic"

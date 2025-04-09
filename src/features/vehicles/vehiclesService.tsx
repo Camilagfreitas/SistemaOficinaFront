@@ -3,18 +3,11 @@ import { IGetAllBrands } from "@/types/ApiResponse/IGetAllBrands";
 import { IGetAllVehiclesResponse } from "@/types/ApiResponse/IGetAllVehiclesResponse";
 import axios from "axios";
 import { VehicleRegistrationFormData } from "./vehicleRegistrationScreen";
-
-const token = sessionStorage.getItem('authToken');
-
-const config = {
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-};
+import { getAuthConfig } from "@/config/authConfig";
 
   export const getAllVehicles = async (): Promise<IGetAllVehiclesResponse[]> => {
     try {
-      const response = await axios.get(API_ENDPOINTS.vehicle.getAllVehicles(), config);
+      const response = await axios.get(API_ENDPOINTS.vehicle.getAllVehicles(),  getAuthConfig());
       return response.data;
     } catch (error) {
       console.error("Erro:", error);
@@ -60,7 +53,7 @@ const config = {
         const response = await axios.post(
           API_ENDPOINTS.vehicle.postRegisterVehicle(),
           data,
-          config
+           getAuthConfig()
         );
         return response.data;
       } catch (error) {

@@ -2,20 +2,13 @@ import { API_ENDPOINTS } from "@/config/apiDictionary";
 import { IGetInventoryResponse } from "@/types/ApiResponse/IGetInventoryResponse";
 import axios from "axios";
 import { PartRegistrationFormData } from "./createPartModal";
-
-const token = sessionStorage.getItem("authToken");
-
-const config = {
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-};
+import { getAuthConfig } from "@/config/authConfig";
 
 export const getInventory = async (): Promise<IGetInventoryResponse> => {
   try {
     const response = await axios.get(
       API_ENDPOINTS.inventory.getInventory(),
-      config
+       getAuthConfig()
     );
     return response.data;
   } catch (error) {
@@ -28,7 +21,7 @@ export const deletePart = async (id: string) => {
   try {
     const response = await axios.delete(
       API_ENDPOINTS.inventory.deletePart(id),
-      config
+      getAuthConfig()
     );
     return response.data;
   } catch (error) {
@@ -44,7 +37,7 @@ export const addPart = async (
     const response = await axios.post(
       API_ENDPOINTS.inventory.addPart(),
       data,
-      config
+      getAuthConfig()
     );
     return response.data;
   } catch (error) {
@@ -68,7 +61,7 @@ export const updatePartQuantity = async (
     const response = await axios.put(
       API_ENDPOINTS.inventory.updatePartQuantity(id),
       { quantity },
-      config
+      getAuthConfig()
     );
     return response.data;
   } catch (error) {
