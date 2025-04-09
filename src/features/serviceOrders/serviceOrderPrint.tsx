@@ -55,6 +55,12 @@ export default function ServiceOrderPrint({ data, total }: Props) {
                 key={j}
                 className="pl-4 flex justify-between border-b border-gray-300 py-1"
               >
+                {!isLabor && (
+                  <p className="w-1/3 text-center">
+                    Quantidade: {detail.quantity}
+                  </p>
+                )}
+                
                 <p className="w-1/3">
                   {isLabor
                     ? detail.part?.description
@@ -62,11 +68,7 @@ export default function ServiceOrderPrint({ data, total }: Props) {
                         detail.part?.description || "—"
                       }`}
                 </p>
-                {!isLabor && (
-                  <p className="w-1/3 text-center">
-                    Quantidade: {detail.quantity}
-                  </p>
-                )}
+                
                 <p className="w-1/3 text-end">
                   Valor: R$ {detail.price.toFixed(2)}
                 </p>
